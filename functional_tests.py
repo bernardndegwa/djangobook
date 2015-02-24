@@ -30,7 +30,7 @@ class NewVisitorTest(unittest.TestCase):
 #and google+ or using form to create an account
 #which asks him for username, email, phone number 
 #and password.
-        inputbox = self.browser.find_element_by_id('user_name')
+        inputbox = self.browser.find_element_by_id('id_user_name')
         self.assertEqual(
                         inputbox.get_attribute('placeholder'),
                         'Enter your name'

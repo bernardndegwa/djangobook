@@ -18,3 +18,17 @@ class HomePageTest(TestCase):
         self.assertIn(b'<title>', response.content)
         self.assertTrue(response.content.strip().endswith(b'</html>'))
         
+    def test_home_page_can_save_a_POST_request(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['user_name'] = 'The user name'
+        
+        response = home_page(request)
+        
+        self.assertIn('The user name', response.content.decode())
+        expected_html = render_to_string(
+                                         'home.html',
+                                         {'new_user_name': 'The user name'}
+                                         )
+        self.assertEqual(response.content.decode(), expected_html)
+        
