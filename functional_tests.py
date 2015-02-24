@@ -23,27 +23,30 @@ class NewVisitorTest(unittest.TestCase):
 
 #In the body  he sees a banner that says rise
         carousel = self.browser.find_element_by_id('carousel').text
-        self.assertIn('rise', header_text)
+        self.assertIn('rise', carousel)
 #There is a field set that invites him to log in so that he can 
 #save his progress.
 #The login offers logging in with facebook, twitter
 #and google+ or using form to create an account
 #which asks him for username, email, phone number 
 #and password.
-        inputbox = self.browser.find_element_by_id('id_name')
+        inputbox = self.browser.find_element_by_id('user_name')
         self.assertEqual(
                         inputbox.get_attribute('placeholder'),
                         'Enter your name'
                         )
 #He types his username, ##email, phone number and password will
 ##be tested later.
-        inputbox.send_Keys('Kamau')
+        inputbox.send_keys('Kamau')
          
 #When he hits enter, the page updates, and now the page says 
 #welcome Kamau.
         inputbox.send_keys(Keys.ENTER)
-        welcome = self.browser.find_element_by_id('welcome_msg')
-        self.assertIn('Welcome Kamau', welcome)         
+        table = self.browser.find_element_by_id('sign_in_form')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
+                        any(row.text == 'Welcome Kamau' for row in rows)
+                        )        
 #He also notices that the page has courses with a short text
 #description listed on the page.The courses spread all the
 #way to the footer of the page.
