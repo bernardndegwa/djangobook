@@ -45,7 +45,9 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('sign_in_form')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-                        any(row.text == 'Welcome Kamau' for row in rows)
+                        any(row.text == 'Kamau' for row in rows),
+                        "Kamau did not appear in table the text is\n%s"%(
+                                                                         table.text,)
                         )        
 #He also notices that the page has courses with a short text
 #description listed on the page.The courses spread all the

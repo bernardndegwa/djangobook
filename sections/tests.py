@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
+from django.shortcuts import render
 
 from sections.views import home_page
+from django.template.loader import render_to_string
 
 # Create your tests here.
 class HomePageTest(TestCase):
@@ -21,14 +23,13 @@ class HomePageTest(TestCase):
     def test_home_page_can_save_a_POST_request(self):
         request = HttpRequest()
         request.method = 'POST'
-        request.POST['user_name'] = 'The user name'
+        request.POST['user_name'] = 'Kamau'
         
         response = home_page(request)
         
-        self.assertIn('The user name', response.content.decode())
-        expected_html = render_to_string(
-                                         'home.html',
-                                         {'new_user_name': 'The user name'}
+        self.assertIn('Kamau', response.content.decode())
+        expected_html = render_to_string('home.html',
+                                         {'new_user_name': 'Kamau'}
                                          )
         self.assertEqual(response.content.decode(), expected_html)
         
