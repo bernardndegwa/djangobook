@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -16,21 +17,38 @@ class NewVisitorTest(unittest.TestCase):
 #He decides to check out the homepage of this site.
         self.browser.get('http://localhost:8000')
 
-#He notices the page title and it says learn.
-        self.assertIn('Learn Interactively', self.browser.title)
-        self.fail('Finish test!')
+#He notices the page title and it says learn interactively.
+        self.assertIn('Learn Interactively', self.browser.title)      
+        
 
-#In the body  he sees a banner that says rise.
+#In the body  he sees a banner that says rise
+        carousel = self.browser.find_element_by_id('carousel').text
+        self.assertIn('rise', header_text)
 #There is a field set that invites him to log in so that he can 
 #save his progress.
 #The login offers logging in with facebook, twitter
 #and google+ or using form to create an account
 #which asks him for username, email, phone number 
 #and password.
-#He also notices that the page has courses with a short text 
+        inputbox = self.browser.find_element_by_id('id_name')
+        self.assertEqual(
+                        inputbox.get_attribute('placeholder'),
+                        'Enter your name'
+                        )
+#He types his username, ##email, phone number and password will
+##be tested later.
+        inputbox.send_Keys('Kamau')
+         
+#When he hits enter, the page updates, and now the page says 
+#welcome Kamau.
+        inputbox.send_keys(Keys.ENTER)
+        welcome = self.browser.find_element_by_id('welcome_msg')
+        self.assertIn('Welcome Kamau', welcome)         
+#He also notices that the page has courses with a short text
 #description listed on the page.The courses spread all the
 #way to the footer of the page.
-
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('Courses', header_text)
 
 #He clicks on one of the titles and it refreshes with a new Page
 #that has a start button and sections listing below it.
@@ -52,6 +70,7 @@ class NewVisitorTest(unittest.TestCase):
 #After the fifth question. The page displays a 
 #badge of completion and loads a new section to start
 #the process again.
+        self.fail('Finish test')
 
 #Kamau feels tired and retires for the day.
 if __name__=='__main__':
