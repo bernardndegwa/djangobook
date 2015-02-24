@@ -14,7 +14,7 @@ class NewVisitorTest(unittest.TestCase):
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id('sign_in_form')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(row.text, [row.text for row in rows])        
+        self.assertIn(row_text, [rw.text for rw in rows])        
         
     def test_can_start_course_and_retrieve_it_later(self):
             

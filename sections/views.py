@@ -1,9 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http.response import HttpResponse
+from sections.models import Item
 
 # Create your views here.
 def home_page(request):
-    #if request.method == 'POST':
+    #item = Item()
+    #item.text = request.POST.get('user_name', '')
+    #item.save()
+    
+    if request.method == 'POST':
+        #new_user_text = request.POST['user_name']
+        Item.objects.create(text=request.POST['user_name'])
+        return redirect('/')
+    
+    #else:
+    #    new_user_text = ''    
         #return HttpResponse(request.POST['user_name'])
-    return render(request, 'home.html', {
-                                         'new_user_name': request.POST.get('user_name', '')})
+    items = Item.objects.all()
+    return render(request, 'home.html', {'items':items})
