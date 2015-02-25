@@ -56,6 +56,9 @@ class NewVisitorTest(unittest.TestCase):
 #way to the footer of the page.
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Courses', header_text)
+        
+        course_list = self.browser.find_elements_by_tag_name('h2').text
+        self.assertIn('Industries Performance', course_list)
 
 #He clicks on one of the titles and it refreshes with a new Page
 #that has a start button and sections listing below it.
