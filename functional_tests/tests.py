@@ -81,6 +81,6 @@ class NewVisitorTest(LiveServerTestCase):
 #After the fifth question. The page displays a 
 #badge of completion and loads a new section to start
 #the process again.
-        #self.fail('Finish test')
+        self.fail('Finish test')
 
 #Kamau feels tired and retires for the day.
