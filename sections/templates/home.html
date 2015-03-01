@@ -2,14 +2,14 @@
 	<title>Learn Interactively</title>
 	<body>
 		<!-- <p id="welcome_msg"></p> -->
-		<p id="carousel">rise</p>
+		<p id="carousel">rise</p>		
 		<form method="post">
-			<input name="user_name" id="id_user_name" placeholder="Enter your name"/>
+			<input name="user_name" id="id_user_name" placeholder="Enter your name" />
 			{% csrf_token %}
 		</form>
 		<table id="sign_in_form">
 			{% for item in items %}
-			<tr><td>{{ item.text }}</td></tr>
+			<tr><td>{{ items.text }}</td></tr>
 			{% endfor %}
 		</table>
 		<h1>Courses</h1>
