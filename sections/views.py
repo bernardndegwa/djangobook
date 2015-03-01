@@ -3,6 +3,8 @@ from django.http.response import HttpResponse
 from sections.models import Item
 from django.core.context_processors import request
 
+from sections.models import Item, List
+
 # Create your views here.
 def home_page(request):
     #item = Item()
@@ -29,7 +31,8 @@ def view_section(request):
     return render(request, 'sections.html', {'items': items})
 
 def new_user(request):
-    Item.objects.create(text=request.POST['user_name'])
+    list_ = List.objects.create()
+    Item.objects.create(text=request.POST['user_name'], list=list_)
     return redirect('/sections/kamaus-only/')
 
     
