@@ -44,31 +44,18 @@ class NewVisitorTest(LiveServerTestCase):
 #He types his username, ##email, phone number and password will
 ##be tested later.
         inputbox.send_keys('Kamau')
-        
          
-#When he hits enter, he is taken to a new url,
-#the page updates, and now the page says 
+#When he hits enter, the page updates, and now the page says 
 #welcome Kamau.
         inputbox.send_keys(Keys.ENTER)
-        kamau_list_url = self.browser.current_url
-        self.assertRegex(kamau_list_url, '/sections/.+')        
         self.check_for_row_in_list_table('Kamau')
         
-        inputbox = self.browser.find_element_by_id('id_user_name')
-        inputbox.send_keys('second item ya kamau')
-        inputbox.send_keys(Keys.ENTER)
-        kamau_list_url = self.browser.current_url
-        self.assertRegex(kamau_list_url, '/sections/.+')
         self.check_for_row_in_list_table('Kamau')
-        self.check_for_row_in_list_table('second item ya kamau')
-        
-        
-        #self.check_for_row_in_list_table('Kamau')
         
 #He also notices that the page has courses with a short text
 #description listed on the page.The courses spread all the
 #way to the footer of the page.
-        header_text = self.browser.find_element_by_tag_name('h3').text
+        header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Courses', header_text)
         
         #course_list = self.browser.find_elements_by_tag_name('h2').text
@@ -94,36 +81,6 @@ class NewVisitorTest(LiveServerTestCase):
 #After the fifth question. The page displays a 
 #badge of completion and loads a new section to start
 #the process again.
-        #self.fail('Finish test')
-        
-#Now a new user, Francis, comes along to the site
+        self.fail('Finish test')
 
-##We use a new browxer session to make sure that no information of Kamau is coming 
-##though from sessions, cookies etc
-
-        self.browser.quit()
-        self.browser = webdriver.Firefox()
-
-#Francis visits the home page. There is no sign  of Kamau's list.
-        self.browser.get(self.live_server_url)
-        page_text = self.browser.find_element_by_tag_name('body').text
-        self.assertNotIn('Kamau', page_text)
-        self.assertNotIn('second item ya', page_text)
-        
-#Francis starts a new list by entering a new item.
-        inputbox = self.browser.find_element_by_id('id_user_name')
-        inputbox.send_keys('Buy milk')
-        inputbox.send_keys(Keys.ENTER)
-        
-#Francis gets his own unique URL
-        francis_list_url = self.browser.current_url
-        self.assertRegex(francis_list_url, '/lists/.+')
-        self.assertNotEqual(francis_list_url, kamau_list_url)
-        
-#Again, there is no trace of Kamau's list
-        page_text = self.browser.find_element_by_tag_name('body').text
-        self.assertNotIn('Kamau', page_text)
-        self.assertIn('Buy milk', page_text)                
-
-
-#Satisfied, they both feel tired and go to sleep.
+#Kamau feels tired and retires for the day.
