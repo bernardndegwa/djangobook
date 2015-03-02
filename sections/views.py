@@ -17,8 +17,8 @@ def home_page(request):
     #else:
     #    new_user_text = ''    
         #return HttpResponse(request.POST['user_name'])
-    #items = Item.objects.all()
-    return render(request, 'home.html')
+    items = Item.objects.all()
+    return render(request, 'home.html', {'items':items})
 
 def view_section(request):
     if request.method == 'POST':
