@@ -20,11 +20,40 @@ class HomePageTest(TestCase):
         self.assertTrue(response.content.startswith(b'<html>'))
         self.assertIn(b'<title>', response.content)
         self.assertTrue(response.content.strip().endswith(b'</html>'))
-    
-    #def test_home_page_only_saves_items_when_necessary(self):
-        #request = HttpRequest()
-        #home_page(request)
-        #self.assertEqual(Item.objects.count(), 0)
+        
+    def test_home_page_can_save_a_POST_request(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['user_name'] = 'Kamau'
+        
+        response = home_page(request)
+        
+        self.assertEqual(Item.objects.count(), 1)
+        new_user = Item.objects.first()
+        self.assertEqual(new_user.text, 'Kamau')
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], 'sections/kamaus-only/')
+        #self.assertIn('Kamau', response.content.decode())
+        #expected_html = render_to_string('home.html',
+        #                                 {'new_user_name': 'Kamau'}
+        #                                 )
+        #self.assertEqual(response.content.decode(), expected_html)
+        
+    def test_home_page_redirects_after_POST(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['user_name'] = 'Kamau'
+        
+        response = home_page(request)
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], 'sections/kamaus-only/')
+                
+    def test_home_page_only_saves_items_when_necessary(self):
+        request = HttpRequest()
+        home_page(request)
+        self.assertEqual(Item.objects.count(), 0)
         
     def test_home_page_displays_all_list_items(self):
         Item.objects.create(text='email')
@@ -35,51 +64,6 @@ class HomePageTest(TestCase):
         
         #self.assertIn('email', response.content.decode())
         #self.assertIn('phone_number', response.content.decode())
-        
-        
-class NewListTest(TestCase):
-    
-    def test_saving_a_POST_requst(self):
-        self.client.post(
-                         '/sections/new',
-                         data={'user_name': 'Kamau'}
-                         )
-        #request = HttpRequest()
-        #request.method = 'POST'
-        #request.POST['user_name'] = 'Kamau'
-        
-        #response = home_page(request)
-        
-        self.assertEqual(Item.objects.count(), 1)
-        new_user = Item.objects.first()
-        self.assertEqual(new_user.text, 'Kamau')
-        
-        #self.assertEqual(response.status_code, 302)
-        #self.assertEqual(response['location'], 'sections/kamaus-only/')
-        #self.assertIn('Kamau', response.content.decode())
-        #expected_html = render_to_string('home.html',
-        #                                 {'new_user_name': 'Kamau'}
-        #                                 )
-        #self.assertEqual(response.content.decode(), expected_html)
-        
-    def test_redirects_after_POST(self):
-        response = self.client.post(
-                         '/sections/new',
-                         data={'user_name': 'Kamau'}
-                         )        
-        
-        #request = HttpRequest()
-        #request.method = 'POST'
-        #request.POST['user_name'] = 'Kamau'
-        
-        #response = home_page(request)
-        
-        self.assertRedirects(response, '/sections/kamaus-only/')
-        
-        #self.assertEqual(response.status_code, 302)
-        #self.assertEqual(response['location'], 'sections/kamaus-only/')
-                
-        
         
         
 class ItemModelTest(TestCase):
@@ -112,8 +96,8 @@ class ListViewTest(TestCase):
         self.assertContains(response, 'itemey 2')
         
     def test_uses_sections_template(self):
-        response = self.client.get('sections/kamaus-only/')
-        self.assertTemplateNotUsed(response, 'home.html')
+        response = self.client.get('section/kamaus-only')
+        self.assertTemplateUsed(response, 'sections.html')
         
    
         

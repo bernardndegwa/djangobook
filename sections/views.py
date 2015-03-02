@@ -9,10 +9,10 @@ def home_page(request):
     #item.text = request.POST.get('user_name', '')
     #item.save()
     
-    #if request.method == 'POST':
+    if request.method == 'POST':
         #new_user_text = request.POST['user_name']
-        #Item.objects.create(text=request.POST['user_name'])
-        #return redirect('sections/kamaus-only/')
+        Item.objects.create(text=request.POST['user_name'])
+        return redirect('sections/kamaus-only/')
     
     #else:
     #    new_user_text = ''    
@@ -27,9 +27,4 @@ def view_section(request):
         
     items = Item.objects.all()
     return render(request, 'sections.html', {'items': items})
-
-def new_user(request):
-    Item.objects.create(text=request.POST['user_name'])
-    return redirect('/sections/kamaus-only/')
-
     

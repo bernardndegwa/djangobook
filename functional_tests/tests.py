@@ -58,10 +58,10 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys('second item ya kamau')
         inputbox.send_keys(Keys.ENTER)
         kamau_list_url = self.browser.current_url
-        
+        self.assertRegex(kamau_list_url, '/sections/.+')
         self.check_for_row_in_list_table('Kamau')
         self.check_for_row_in_list_table('second item ya kamau')
-        self.assertRegex(kamau_list_url, '/sections/.+')
+        
         
         #self.check_for_row_in_list_table('Kamau')
         
