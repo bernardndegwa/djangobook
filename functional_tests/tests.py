@@ -48,9 +48,22 @@ class NewVisitorTest(LiveServerTestCase):
 #When he hits enter, the page updates, and now the page says 
 #welcome Kamau.
         inputbox.send_keys(Keys.ENTER)
+#When he hits enter he is taken to a new url. and now there is a an item
+#item in a to do list table
+        
+        kamau_list_url = self.browser.current_url
+        self.assertRegexpMatches(kamau_list_url, '/sections/.+')        
         self.check_for_row_in_list_table('Kamau')
         
-        self.check_for_row_in_list_table('Kamau')
+        
+        inputbox.send_keys('Kamau second item')
+        inputbox.send_keys(Keys.ENTER)
+        kamau_list_url = self.browser.current_url
+        #self.assertRegexpMatches(kamau_list_url, '/sections/.+')  
+        self.check_for_row_in_list_table('Kamau')      
+        self.check_for_row_in_list_table('Kamau second item')
+        
+#There is still a box inviting him to add another item
         
 #He also notices that the page has courses with a short text
 #description listed on the page.The courses spread all the
@@ -81,6 +94,50 @@ class NewVisitorTest(LiveServerTestCase):
 #After the fifth question. The page displays a 
 #badge of completion and loads a new section to start
 #the process again.
-        self.fail('Finish test')
+
+
+#The page updates again and now shows both her items on her list
+
+
+        #self.check_for_row_in_list_table('2. Kamau second item')
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+        #self.fail('Finish test')
 
 #Kamau feels tired and retires for the day.
+
+#Francis another user visits the page. There is no sign of Kamau's list
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Kamau', page_text)
+        self.assertNotIn('second item', page_text)
+        
+#Francis starts by entering a new item.
+        inputbox = self.browser.find_element_by_id('id_user_name')
+        inputbox.send_keys('Buy milk')
+        inputbox.send_keys(Keys.ENTER)
+        
+#Francis gets his own unique url
+        francis_list_url = self.browser.current_url
+        self.assertRegexpMatches(francis_list_url, '/lists/.+')
+        self.assertNotEqual(francis_list_url, kamau_list_url)
+        
+#Again there is no trace of Kamau's list
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('kamau', page_text)
+        self.assertIn('Buy milk', page_text)
+        
+#Satisfied they both go to sleep
+        
+
+
+
+
+
+
+
+
+
+
+
+
