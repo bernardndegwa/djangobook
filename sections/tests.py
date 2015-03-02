@@ -114,21 +114,26 @@ class ListAndItemModelTest(TestCase):
         
 class ListViewTest(TestCase):
     
-    def test_displays_all_items(self):
+    def test_uses_sections_template(self):
         list_ = List.objects.create()
-        Item.objects.create(text='itemey 1', list=list_)
-        Item.objects.create(text='itemey 2', list=list_)
+        response = self.client.get('sections/%d/',(list_.id,))
+        self.assertTemplateNotUsed(response, 'home.html')
         
-        response = self.client.get('/sections/kamaus-only/')
+    def test_displays_only_items_for_that_list(self):
+        correct_list = List.objects.create()
+        Item.objects.create(text='itemey 1', list=correct_list)
+        Item.objects.create(text='itemey 2', list=correct_list)
+        other_list = List.objects.create()
+        Item.objects.create(text='other list itemy 1', list=other_list)
+        Item.objects.create(text='other list itemy 2', list=other_list)
+        
+        response = self.client.get('/sections/%d/' %(correct_list.id,))
         
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
+        self.assertContains(response, 'other list itemy 1')
+        self.assertContains(response, 'other list itemy 1')
         
-    def test_uses_sections_template(self):
-        response = self.client.get('sections/kamaus-only/')
-        self.assertTemplateNotUsed(response, 'home.html')
-        
-   
         
         
         
