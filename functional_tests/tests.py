@@ -52,9 +52,9 @@ class NewVisitorTest(LiveServerTestCase):
 #item in a to do list table
         
         kamau_list_url = self.browser.current_url
-        self.assertRegexpMatches(kamau_list_url, '/sections/.+')        
-        self.check_for_row_in_list_table('Kamau')
         
+        self.check_for_row_in_list_table('Kamau')
+        self.assertRegexpMatches(kamau_list_url, '/sections/.+')        
         
         inputbox.send_keys('Kamau second item')
         inputbox.send_keys(Keys.ENTER)
