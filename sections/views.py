@@ -35,11 +35,6 @@ def view_section(request, list_id):
 def new_user(request):
     list_ = List.objects.create()
     Item.objects.create(text=request.POST['user_name'], list=list_)
-    return redirect('/sections/%d/' % (list_.id,))
-
-def add_user(request, list_id):
-    list_ = List.objects.get(id=list_id)
-    Item.objects.create(text=request.POST['user_name'], list=list_)
-    return redirect('/sections/%d' %(list_.id,))
+    return redirect('sections/kamaus-only')
 
     
