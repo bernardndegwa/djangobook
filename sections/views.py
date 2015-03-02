@@ -22,19 +22,17 @@ def home_page(request):
     #items = Item.objects.all()
     return render(request, 'home.html')
 
-def view_section(request, list_id):
-    list_ = List.objects.get(id=list_id)
-    items = Item.objects.filter(list=list_)
-    #if request.method == 'POST':
+def view_section(request):
+    if request.method == 'POST':
         #new_user_text = request.POST['user_name']
-        #Item.objects.create(text=request.POST['user_name'])
+        Item.objects.create(text=request.POST['user_name'])
         
-    
+    items = Item.objects.all()
     return render(request, 'sections.html', {'items': items})
 
 def new_user(request):
     list_ = List.objects.create()
     Item.objects.create(text=request.POST['user_name'], list=list_)
-    return redirect('sections/kamaus-only')
+    return redirect('/sections/kamaus-only/')
 
     
