@@ -22,15 +22,21 @@ def home_page(request):
     items = Item.objects.all()
     return render(request, 'home.html', {'items':items})
 
-def view_list(request):
-    items = Item.objects.all()
-    return render(request, 'section.html', {'items': items})
+def view_list(request, list_id):
+    list_ = List.objects.get(id=list_id)
+    #items = Item.objects.filter(list=list_)
+    return render(request, 'section.html', {'list': list_})
 
 def new_list(request):
     list_ = List.objects.create()
     Item.objects.create(text=request.POST['user_name'], list=list_)
-    return redirect('/sections/kamaus-only')
-
+    return redirect('sections/%d' % (list_.id,))
+    #return redirect(view_list(request, list_id=list_))
+    
+def add_item(request, list_id):
+    list_ = List.objects.get(id=list_id)
+    Item.objects.create(text=request.POST['user_name'], list=list_)
+    return redirect('sections/%d' % (list_.id,))
 
 
 
